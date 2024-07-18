@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memories with Love</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine&display=swap" rel="stylesheet">
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Global styles */
+        body {
+            font-family: 'Parisienne', cursive;
+            background-color: #ffe6f2; /* light pink background */
+            color: #333; /* dark text color */
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        header {
+            background-color: #ffccdd; /* darker pink header */
+            text-align: center;
+            padding: 20px 0;
+            visibility: hidden; /* Initially hide the header */
+        }
+        
+        header h1 {
+            font-family: 'Tangerine', cursive; /* Change to Tangerine */
+            font-size: 2.5em;
+            color: #660033; /* deep pink */
+        }
+        
+        main {
+            padding: 20px;
+            visibility: hidden; /* Initially hide the main content */
+        }
+        
+        .content {
+            background-color: #fff; /* white content background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .cursive-font {
+            font-family: 'Tangerine', cursive; /* Change to Tangerine */
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .signature {
+            font-family: 'Tangerine', cursive; /* Change to Tangerine */
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+        
+        footer {
+            background-color: #ffccdd; /* darker pink footer */
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            visibility: hidden; /* Initially hide the footer */
+        }
+        
+        /* Image gallery section */
+        .image-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 192, 203, 0.9); /* light pink background with RGBA */
+            z-index: 9999; /* Ensure it's on top of everything */
+            cursor: pointer;
+        }
+        
+        .image-gallery img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover; /* Ensure the image covers the entire area */
+            filter: brightness(1.2); /* Optional: Brighten the image */
+            border-radius: 50%;
+            padding: 20px;
+            background-color: #ffc0cb;
+            position: relative;
+        }
+        
+        .image-gallery img::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            background: url('https://www.flaticon.com/svg/static/icons/svg/134/134882.svg') no-repeat center center;
+            background-size: contain;
+            z-index: -1;
+        }
+        
+        /* Link Images Section */
+        .link-images {
+            text-align: center;
+            margin: 20px auto; /* Center align and provide top margin */
+            max-width: 800px; /* Limit maximum width for responsiveness */
+        }
+        
+        .link-images .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Adjust margin between rows */
+        }
+        
+        .link-image {
+            display: inline-block;
+            margin: 10px; /* Adjust margin as needed */
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 10px; /* Rounded corners for images */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Subtle shadow effect */
+            width: calc(25% - 20px); /* Adjust width for 4 images per row */
+            flex-shrink: 0; /* Prevent images from shrinking */
+        }
+        
+        .link-image img {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            border-radius: 10px; /* Rounded corners for images */
+        }
+        
+        .link-image:hover img {
+            transform: scale(1.1); /* Scale up the image on hover */
+            box-shadow: 0 0 20px rgba(0,0,0,0.2); /* Optional: Add box shadow on hover */
+        }
+        
+        .link-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 192, 203, 0.9); /* Light pink background with RGBA */
+            opacity: 0; /* Initially invisible */
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .link-image:hover::before {
+            opacity: 1; /* Fade in the pink background on hover */
+        }
+        
+        /* Heart animation */
+        @keyframes heart {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .heart {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+            animation: heart 3s ease-out infinite;
+            pointer-events: none; /* Ensure hearts do not interfere with mouse events */
+        }
+    </style>
+</head>
+<body onload="showHearts()">
+
+    <!-- Image Gallery Section -->
+    <section class="image-gallery" onclick="showWebsite()">
+        <img src="https://media.tenor.com/1PK6Kv-9meEAAAAM/love-lilo-and-stitch.gif" alt="Click to Enter">
+    </section>
+    
+    <header id="header">
+        <h1>Us</h1>
+    </header>
+    <main id="main-content">
+        <div class="content">
+            <p class="cursive-font">Hi love,</p>
+            <p class="cursive-font">I know that this is a very rough time for us, like a really rough time, but I know we're going to get through it because we both love each other and i wont let anything stop me from loving you as long as you feel the same way. I love you so much. I'm sorry for just messing up a lot. To be honest, I don't know how you stay with me, lmao. I can barely stand myself. But I'm glad, I'm glad that I'm with you. I'm glad that we're together. You make me the happiest I've ever been. I just wanted to make this to remind you of all of our memories. If you ever had any doubts just look back here.I love you and that will never change i promise </p>
+            <p class="cursive-font">With love,</p>
+            <p class="signature">Devie </p>
+        </div>
+    </main>
+    
+    <!-- Link Images Section -->
+    <section class="link-images">
+        <!-- Row 1 -->
+        <div class="row">
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/449733503_396327906268341_1914338734113741680_n.jpg?stp=dst-jpg_s403x403&_nc_cat=100&ccb=1-7&_nc_sid=0024fc&_nc_ohc=idNsQD8bOhwQ7kNvgHPOJmb&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QFPEHEwl0J-prqVYt6SdAoFMUC0P16XiE7kxOkra3nwoA&oe=66BFF358" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450980629_1462237811075877_1338924023022253644_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=0024fc&_nc_ohc=AMCxHSdKUf8Q7kNvgFQVDso&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QH4U-2mZTbpTjbgy8TQnz5bYoQn6jzT6vjEXwrTg3qoTQ&oe=66BFECAC" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/451084996_372069662571508_6015720131512021650_n.jpg?stp=dst-jpg_p403x403&_nc_cat=107&ccb=1-7&_nc_sid=0024fc&_nc_ohc=0s1TP5UzUF4Q7kNvgGscsRZ&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QG6UQN4uhcmYqGnDxGKBW5OmXhDMA7lD5nIv9J9rqHjHQ&oe=66C0062D" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450404422_1190847665577784_4231317319281707344_n.jpg?stp=dst-jpg_s417x417&_nc_cat=110&ccb=1-7&_nc_sid=0024fc&_nc_ohc=s7oSFm_WycAQ7kNvgHa3D0m&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QGmcDqqOzQBl6OI4FpXKPsoBuAtO7dXNpG7LG9Xa2puTQ&oe=66BFF142" alt="Placeholder Image">
+  <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/451560755_7888958331196716_116983598975194068_n.jpg?stp=dst-jpg_s403x403&_nc_cat=106&ccb=1-7&_nc_sid=0024fc&_nc_ohc=zkrS7KnEdIEQ7kNvgE6Q5Db&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEA2cHdbV4HsBTERe1HMObn8Lr_t37-7UU8OJtwl77XPw&oe=66BFD786" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/451324808_1470114213614874_2859451025725262633_n.jpg?stp=dst-jpg_p403x403&_nc_cat=107&ccb=1-7&_nc_sid=0024fc&_nc_ohc=SiM8egNCM74Q7kNvgF1x6XD&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QFhUjCgkBH4mwhnQ4XQmiEde9lnXu12qYTUfaGsR5oxPA&oe=66C039BE" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/449868811_1271126093770767_3480515929229868902_n.jpg?stp=dst-jpg_s403x403&_nc_cat=104&ccb=1-7&_nc_sid=0024fc&_nc_ohc=4t5gE1yA8D4Q7kNvgGpnDf6&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QHLMCZbvJ9AUvqpc-Y4gj9oVButj6ywep3ZG-jRVBqWng&oe=66BFFDC1" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450658985_2363326187343752_7570006429619849985_n.jpg?stp=dst-jpg_s403x403&_nc_cat=104&ccb=1-7&_nc_sid=0024fc&_nc_ohc=9mHL25ccAjsQ7kNvgFfQCSc&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEvH-wGqq0B0398937H4o9iwMBJTRMORHrc3OCFVdkv9A&oe=66BFE056" alt="Placeholder Image">
+            </a>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row">
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450550442_863116209017586_7071887650222929583_n.jpg?stp=dst-jpg_s403x403&_nc_cat=111&ccb=1-7&_nc_sid=0024fc&_nc_ohc=WKQgPN5XVAAQ7kNvgEtFzdB&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QHtVZpz0pl6q_BBVj8CewiMHvrMVcFD-0SX-GZJm6ORYg&oe=66BFF527" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450854209_987788149808938_1421612765311985617_n.jpg?stp=dst-jpg_p403x403&_nc_cat=105&ccb=1-7&_nc_sid=0024fc&_nc_ohc=ckPrYN4ENTIQ7kNvgGLzWfS&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QF02B1OWggLe-RRhACvOXF0UL8OoAUE0Wu8P6CuCseJvw&oe=66C01372" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/449751646_1205232817163570_344468496263717647_n.jpg?stp=dst-jpg_p403x403&_nc_cat=109&ccb=1-7&_nc_sid=0024fc&_nc_ohc=i_xltODIdGgQ7kNvgHha95M&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QGSqm9MRTC5cEdCvNulOOSM8Np9G5tZNxuX8bCbFA5YAg&oe=66BFDDC0" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450198165_1004122741378840_639999276680834494_n.jpg?stp=dst-jpg_s403x403&_nc_cat=102&ccb=1-7&_nc_sid=0024fc&_nc_ohc=Q9K_UAnJOA4Q7kNvgFuEPWj&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QF_We8rOwH3itp3I1J573HL53ZxqDL0gvwLdCvIOyXZig&oe=66BFE6A5" alt="Placeholder Image">
+            </a>
+  <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/449704142_396522976240928_4132000172138120126_n.jpg?stp=dst-jpg_s403x403&_nc_cat=101&ccb=1-7&_nc_sid=0024fc&_nc_ohc=Ol3aZE1sc3MQ7kNvgHN27IF&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QH4Lt052UgZTfwjEoQzRiZcC3bWEMhldwCxhKwevVIDyg&oe=66C03CCB" alt="Placeholder Image">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/449630665_1511408069469069_5185798331156490990_n.jpg?stp=dst-jpg_p403x403&_nc_cat=108&ccb=1-7&_nc_sid=0024fc&_nc_ohc=XpUDae20JF4Q7kNvgHj-eXS&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QFggdgeoaRdjfB1mcAvTgvq5nyEl0scgd9-XboCSwOgLA&oe=66C014D5">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/450112828_3509493569347962_7452630330109654285_n.jpg?stp=dst-jpg_p403x403&_nc_cat=104&ccb=1-7&_nc_sid=0024fc&_nc_ohc=UH9bOaH0DkwQ7kNvgEjFb4r&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QFScIwYqBvrTYHEhqi7AYk5UWa5nZQmbtYnt5GXGhLxxQ&oe=66C00EE6">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/449727037_3935027363450732_606392450286436327_n.jpg?stp=dst-jpg_p403x403&_nc_cat=102&ccb=1-7&_nc_sid=0024fc&_nc_ohc=dRXgZb3APzAQ7kNvgEA-QEi&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QGTN2HUO44bD90Rqu6ZtUNgWigO6lhTUCxaeNjM8fnLZA&oe=66C02771" alt="Placeholder Image">
+            </a>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row">
+ </a>
+              <  <a class="link-image" href="#">
+                <img src="https://i.pinimg.com/originals/92/dc/13/92dc13df1f31754c07becfe13714288c.gif">
+
+        
+            </a>
+              <  <a class="link-image" href="#">
+                <img src="https://i.pinimg.com/originals/92/dc/13/92dc13df1f31754c07becfe13714288c.gif">
+
+            </a>
+              <a class="link-image" href="#">
+                <img src="https://i.pinimg.com/originals/92/dc/13/92dc13df1f31754c07becfe13714288c.gif">
+            </a>
+            <a class="link-image" href="#">
+                <img src="https://content.presentermedia.com/files/animsp/00002000/2350/taking_pictures_PA_lg_wm.gif">
+            </a>
+              <  <a class="link-image" href="#">
+                <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/451865271_4258295074396800_4247560583721344000_n.jpg?stp=dst-jpg_s403x403&_nc_cat=105&ccb=1-7&_nc_sid=0024fc&_nc_ohc=GB8vH8oYdPkQ7kNvgEWqCRd&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QHcifSw9VFabO21ye45qFAcNmsEr_pGmafBPKToZjdN0A&oe=66C02E20">
+
+            </a>
+              <a class="link-image" href="#">
+                <img src="https://i.pinimg.com/originals/92/dc/13/92dc13df1f31754c07becfe13714288c.gif">
+   </a>
+              <a class="link-image" href="#">
+                <img src="https://i.pinimg.com/originals/92/dc/13/92dc13df1f31754c07becfe13714288c.gif">
+
+ </a>
+              <  <a class="link-image" href="#">
+                <img src="https://i.pinimg.com/originals/92/dc/13/92dc13df1f31754c07becfe13714288c.gif">
+
+            
+            
+            </a>
+        </div>
+    </section>
+    
+    <footer id="footer">
+        <p>Forever.</p>
+    </footer>
+
+    <script>
+        // JavaScript function to show the main content when the image is clicked
+        function showWebsite() {
+            console.log('showWebsite function is executed');
+            
+            document.getElementById('header').style.visibility = 'visible';
+            document.getElementById('main-content').style.visibility = 'visible';
+            document.getElementById('footer').style.visibility = 'visible';
+            document.querySelector('.image-gallery').style.display = 'none';
+            
+            // Add hearts animation
+            const heartsContainer = document.createElement('div');
+            heartsContainer.classList.add('hearts-container');
+            
+            // Calculate the number of hearts based on the viewport size
+            const numHearts = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < numHearts; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = Math.random() * window.innerHeight + 'px';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                heartsContainer.appendChild(heart);
+            }
+            
+            document.body.appendChild(heartsContainer);
+            
+            // Remove hearts after animation
+            setTimeout(() => {
+                heartsContainer.remove();
+            }, 9810000); // Adjust duration as needed
+        }
+    </script>
+</body>
+</html>
